@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/config/app_config.dart';
-import 'package:payment_portal/features/payment/widgets/security_scanner_widget.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
+import 'package:payment_portal/features/security/presentation/widgets/security_scanner_widget.dart';
 
 class ProcessingProgressWidget extends StatelessWidget {
   const ProcessingProgressWidget({super.key, required this.progress});
@@ -52,7 +52,8 @@ class ProcessingProgressWidget extends StatelessWidget {
           const SizedBox(height: 10),
           ClipRRect(
             borderRadius: BorderRadius.circular(
-                config.useHighDensityLayout ? 2 : 6),
+              config.useHighDensityLayout ? 2 : 6,
+            ),
             child: LinearProgressIndicator(
               value: progress,
               minHeight: config.useHighDensityLayout ? 4 : 8,

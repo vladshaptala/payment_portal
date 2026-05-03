@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'payment_model.dart';
+part of 'payment.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
-    _PaymentModel(
+_PaymentOrder _$PaymentOrderFromJson(Map<String, dynamic> json) =>
+    _PaymentOrder(
       id: json['id'] as String,
       recipient: json['recipient'] as String,
       accountNumber: json['accountNumber'] as String,
@@ -17,14 +17,11 @@ _PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
       billItems: (json['billItems'] as List<dynamic>)
           .map((e) => BillItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      status:
-          $enumDecodeNullable(_$PaymentStatusEnumMap, json['status']) ??
-          PaymentStatus.pending,
       promoCode: json['promoCode'] as String?,
       discount: (json['discount'] as num?)?.toDouble() ?? 0.0,
     );
 
-Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
+Map<String, dynamic> _$PaymentOrderToJson(_PaymentOrder instance) =>
     <String, dynamic>{
       'id': instance.id,
       'recipient': instance.recipient,
@@ -33,17 +30,9 @@ Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
       'currency': instance.currency,
       'timestamp': instance.timestamp.toIso8601String(),
       'billItems': instance.billItems,
-      'status': _$PaymentStatusEnumMap[instance.status]!,
       'promoCode': instance.promoCode,
       'discount': instance.discount,
     };
-
-const _$PaymentStatusEnumMap = {
-  PaymentStatus.pending: 'pending',
-  PaymentStatus.processing: 'processing',
-  PaymentStatus.success: 'success',
-  PaymentStatus.failed: 'failed',
-};
 
 _BillItem _$BillItemFromJson(Map<String, dynamic> json) => _BillItem(
   label: json['label'] as String,

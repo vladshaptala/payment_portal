@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:payment_portal/core/config/app_config.dart';
-import 'package:payment_portal/core/models/payment_model.dart';
-import 'package:payment_portal/core/providers/payment_provider.dart';
-import 'package:payment_portal/core/providers/security_provider.dart';
-import 'package:payment_portal/features/payment/widgets/bill_breakdown.dart';
-import 'package:payment_portal/features/payment/widgets/payment_summary_card.dart';
-import 'package:payment_portal/features/payment/widgets/processing_progress_widget.dart';
-import 'package:payment_portal/features/payment/widgets/promo_banner.dart';
-import 'package:payment_portal/features/payment/widgets/security_scanner_widget.dart';
-import 'package:payment_portal/features/payment/widgets/security_warning_banner.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
+import 'package:payment_portal/features/payment/application/payment_notifier.dart';
+import 'package:payment_portal/features/payment/presentation/widgets/bill_breakdown.dart';
+import 'package:payment_portal/features/payment/presentation/widgets/payment_summary_card.dart';
+import 'package:payment_portal/features/payment/presentation/widgets/processing_progress_widget.dart';
+import 'package:payment_portal/features/payment/presentation/widgets/promo_banner.dart';
+import 'package:payment_portal/features/security/application/security_notifier.dart';
+import 'package:payment_portal/features/security/presentation/widgets/security_scanner_widget.dart';
+import 'package:payment_portal/features/security/presentation/widgets/security_warning_banner.dart';
 
-class PaymentConfirmationScreen extends ConsumerStatefulWidget {
-  const PaymentConfirmationScreen({super.key});
+class PaymentScreen extends ConsumerStatefulWidget {
+  const PaymentScreen({super.key});
 
   @override
-  ConsumerState<PaymentConfirmationScreen> createState() =>
-      _PaymentConfirmationScreenState();
+  ConsumerState<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-class _PaymentConfirmationScreenState
-    extends ConsumerState<PaymentConfirmationScreen> {
+class _PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Enable FLAG_SECURE as soon as the payment screen is on-screen
       await ref.read(securityProvider.notifier).setWindowSecure(true);
-      // Run the device security check
       await ref.read(securityProvider.notifier).checkSecurity();
     });
   }
@@ -42,79 +37,74 @@ class _PaymentConfirmationScreenState
   Widget build(BuildContext context) {
     final config = AppBrandConfig.of(context);
     final security = ref.watch(securityProvider);
-    final processing = ref.watch(paymentProcessingProvider);
-    final hasSecurityIssue = security.isRooted || security.isScreenRecording;
+    final payment = ref.watch(paymentProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(config.brandName),
-        actions: [_SecurityIndicator(security: security)],
+        actions: [_SecurityIndicator(state: security)],
       ),
       body: SingleChildScrollView(
         padding: config.contentPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Security scanning animation shown while the audit runs
             if (security.isChecking) ...[
               SecurityScanningCard(label: 'Scanning device security…'),
               config.verticalGap,
             ],
 
-            if (hasSecurityIssue) ...[
-              SecurityWarningBanner(securityState: security),
+            // Warning banner shown when issues are found
+            if (security.hasIssue) ...[
+              SecurityWarningBanner(security: security.security!),
               config.verticalGap,
             ],
 
-            // ── Brand-specific promo banner (retail only via feature flag) ──
+            // Promo banner — retail only (feature flag)
             if (config.showPromoBanner) ...[
               PromoBanner(message: config.promoMessage!),
               config.verticalGap,
             ],
 
-            // ── Shared payment summary ───────────────────────────────────────
-            PaymentSummaryCard(payment: processing.payment),
+            PaymentSummaryCard(order: payment.order, status: payment.status),
             config.verticalGap,
 
-            // ── Brand-specific bill breakdown (utility only via feature flag) ─
+            // Bill breakdown — utility only (feature flag)
             if (config.showBillBreakdown) ...[
-              BillBreakdownWidget(items: processing.payment.billItems),
+              BillBreakdownWidget(items: payment.order.billItems),
               config.verticalGap,
             ],
 
-            // ── Processing progress ──────────────────────────────────────────
-            if (processing.isProcessing) ...[
-              ProcessingProgressWidget(progress: processing.processingProgress),
+            if (payment.isProcessing) ...[
+              ProcessingProgressWidget(progress: payment.progress),
               config.verticalGap,
             ],
 
-            // ── Success state ────────────────────────────────────────────────
-            if (processing.isComplete) ...[
-              PaymentSuccessWidget(paymentId: processing.payment.id),
+            if (payment.isComplete) ...[
+              PaymentSuccessWidget(paymentId: payment.order.id),
               config.verticalGap,
             ],
 
-            // ── Error state ──────────────────────────────────────────────────
-            if (processing.errorMessage != null) ...[
-              _ErrorBanner(message: processing.errorMessage!),
+            if (payment.hasFailed && payment.errorMessage != null) ...[
+              _ErrorBanner(message: payment.errorMessage!),
               config.verticalGap,
             ],
 
-            // ── CTA buttons ──────────────────────────────────────────────────
-            if (!processing.isComplete) ...[
-              _ConfirmPaymentButton(
-                isProcessing: processing.isProcessing,
-                isBlocked: hasSecurityIssue,
+            if (!payment.isComplete) ...[
+              _ConfirmButton(
+                isProcessing: payment.isProcessing,
+                isBlocked: security.hasIssue,
               ),
             ] else ...[
               OutlinedButton.icon(
                 onPressed: () =>
-                    ref.read(paymentProcessingProvider.notifier).reset(),
+                    ref.read(paymentProvider.notifier).reset(),
                 icon: const Icon(Icons.refresh),
                 label: const Text('New Payment'),
               ),
             ],
 
-            // Bottom safe area padding
             SizedBox(height: MediaQuery.paddingOf(context).bottom + 16),
           ],
         ),
@@ -123,16 +113,20 @@ class _PaymentConfirmationScreenState
   }
 }
 
-class _SecurityIndicator extends StatelessWidget {
-  const _SecurityIndicator({required this.security});
+// ---------------------------------------------------------------------------
+// Private sub-widgets
+// ---------------------------------------------------------------------------
 
-  final SecurityState security;
+class _SecurityIndicator extends StatelessWidget {
+  const _SecurityIndicator({required this.state});
+
+  final SecurityCheckState state;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    if (security.isChecking) {
+    if (state.isChecking) {
       return const Padding(
         padding: EdgeInsets.all(14),
         child: SizedBox(
@@ -143,23 +137,21 @@ class _SecurityIndicator extends StatelessWidget {
       );
     }
 
-    final hasIssue = security.isRooted || security.isScreenRecording;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Icon(
-        hasIssue ? Icons.gpp_bad : Icons.lock,
-        color: hasIssue ? theme.colorScheme.error : theme.colorScheme.primary,
+        state.hasIssue ? Icons.gpp_bad : Icons.lock,
+        color: state.hasIssue
+            ? theme.colorScheme.error
+            : theme.colorScheme.primary,
         size: 22,
       ),
     );
   }
 }
 
-class _ConfirmPaymentButton extends ConsumerWidget {
-  const _ConfirmPaymentButton({
-    required this.isProcessing,
-    required this.isBlocked,
-  });
+class _ConfirmButton extends ConsumerWidget {
+  const _ConfirmButton({required this.isProcessing, required this.isBlocked});
 
   final bool isProcessing;
   final bool isBlocked;
@@ -176,8 +168,8 @@ class _ConfirmPaymentButton extends ConsumerWidget {
         onPressed: isDisabled
             ? null
             : () => ref
-                  .read(paymentProcessingProvider.notifier)
-                  .startProcessing(),
+                .read(paymentProvider.notifier)
+                .confirmPayment(),
         child: isProcessing
             ? const SizedBox(
                 width: 20,
@@ -224,3 +216,4 @@ class _ErrorBanner extends StatelessWidget {
     );
   }
 }
+

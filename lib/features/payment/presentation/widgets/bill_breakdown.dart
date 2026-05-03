@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/config/app_config.dart';
-import 'package:payment_portal/core/models/payment_model.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
+import 'package:payment_portal/features/payment/domain/payment.dart';
 
-/// Shown only when AppBrandConfig.showBillBreakdown == true (utility flavor).
-/// High-density tabular layout matching the professional utility brand identity.
 class BillBreakdownWidget extends StatelessWidget {
   const BillBreakdownWidget({super.key, required this.items});
 
@@ -94,10 +92,12 @@ class _TotalRow extends StatelessWidget {
     final config = AppBrandConfig.of(context);
     final theme = Theme.of(context);
 
-    final subtotal =
-        items.where((i) => !i.isDiscount).fold(0.0, (s, i) => s + i.amount);
-    final discounts =
-        items.where((i) => i.isDiscount).fold(0.0, (s, i) => s + i.amount);
+    final subtotal = items
+        .where((i) => !i.isDiscount)
+        .fold(0.0, (s, i) => s + i.amount);
+    final discounts = items
+        .where((i) => i.isDiscount)
+        .fold(0.0, (s, i) => s + i.amount);
     final total = subtotal - discounts;
 
     return Padding(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/config/app_config.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
 
 ThemeData buildUtilityTheme() {
-  const primary = Color(0xFF0D1B4B); // Navy
-  const secondary = Color(0xFF546E7A); // Blue-grey/Slate
+  const primary = Color(0xFF0D1B4B);
+  const secondary = Color(0xFF546E7A);
 
   final colorScheme = ColorScheme.fromSeed(
     seedColor: primary,
@@ -60,10 +60,7 @@ ThemeData buildUtilityTheme() {
       ),
     ),
     dividerTheme: const DividerThemeData(thickness: 1, space: 0),
-    progressIndicatorTheme: ProgressIndicatorThemeData(
-      strokeWidth: 2.5,
-      color: Colors.white,
-    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(strokeWidth: 2.5),
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),

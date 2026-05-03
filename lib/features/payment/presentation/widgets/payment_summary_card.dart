@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/config/app_config.dart';
-import 'package:payment_portal/core/models/payment_model.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
+import 'package:payment_portal/features/payment/domain/payment.dart';
 
-/// Shared across both brands — visual tokens adapt automatically via ThemeData.
 class PaymentSummaryCard extends StatelessWidget {
-  const PaymentSummaryCard({super.key, required this.payment});
+  const PaymentSummaryCard({
+    super.key,
+    required this.order,
+    required this.status,
+  });
 
-  final PaymentModel payment;
+  final PaymentOrder order;
+  final PaymentStatus status;
 
   @override
   Widget build(BuildContext context) {
@@ -36,27 +40,22 @@ class PaymentSummaryCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                _StatusChip(status: payment.status),
+                _StatusChip(status: status),
               ],
             ),
             config.verticalGap,
             const Divider(),
             config.verticalGap,
-            _SummaryRow(label: 'To', value: payment.recipient, isBold: true),
-            _SummaryRow(label: 'Account', value: payment.accountNumber),
-            _SummaryRow(
-              label: 'Reference',
-              value: payment.id,
-              isMonospace: true,
-            ),
-            _SummaryRow(label: 'Date', value: _formatDate(payment.timestamp)),
-            if (payment.promoCode != null) ...[
+            _SummaryRow(label: 'To', value: order.recipient, isBold: true),
+            _SummaryRow(label: 'Account', value: order.accountNumber),
+            _SummaryRow(label: 'Reference', value: order.id, isMonospace: true),
+            _SummaryRow(label: 'Date', value: _formatDate(order.timestamp)),
+            if (order.promoCode != null)
               _SummaryRow(
                 label: 'Promo',
-                value: payment.promoCode!,
+                value: order.promoCode!,
                 valueColor: theme.colorScheme.tertiary,
               ),
-            ],
             config.verticalGap,
             const Divider(),
             config.verticalGap,
@@ -70,7 +69,7 @@ class PaymentSummaryCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${payment.currency} ${payment.total.toStringAsFixed(2)}',
+                  '${order.currency} ${order.total.toStringAsFixed(2)}',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: theme.colorScheme.primary,
@@ -85,7 +84,11 @@ class PaymentSummaryCard extends StatelessWidget {
   }
 
   String _formatDate(DateTime dt) =>
-      '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}  ${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+      '${dt.day.toString().padLeft(2, '0')}/'
+      '${dt.month.toString().padLeft(2, '0')}/'
+      '${dt.year}  '
+      '${dt.hour.toString().padLeft(2, '0')}:'
+      '${dt.minute.toString().padLeft(2, '0')}';
 }
 
 class _SummaryRow extends StatelessWidget {

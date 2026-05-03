@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/config/app_config.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
 
 ThemeData buildRetailTheme() {
   const primary = Color(0xFFE65100);
@@ -55,10 +55,7 @@ ThemeData buildRetailTheme() {
         fontWeight: FontWeight.w700,
       ),
     ),
-    progressIndicatorTheme: ProgressIndicatorThemeData(
-      strokeWidth: 2.5,
-      color: Colors.white,
-    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(strokeWidth: 2.5),
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.android: ZoomPageTransitionsBuilder(),

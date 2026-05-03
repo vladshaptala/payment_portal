@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/models/payment_model.dart';
+import 'package:payment_portal/features/security/domain/device_security.dart';
 
-/// Shown when the device is rooted or screen recording is active.
-/// Independent of brand — security warnings are always the same.
+/// Shown when [DeviceSecurity.hasIssue] is true.
+/// Brand-agnostic — security warnings are the same across all brands.
 class SecurityWarningBanner extends StatelessWidget {
-  const SecurityWarningBanner({super.key, required this.securityState});
+  const SecurityWarningBanner({super.key, required this.security});
 
-  final SecurityState securityState;
+  final DeviceSecurity security;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final messages = [
-      if (securityState.isRooted)
+      if (security.isRooted)
         'Rooted device detected — payment may be blocked by your bank.',
-      if (securityState.isScreenRecording)
+      if (security.isScreenRecording)
         'Screen recording detected — hide your payment details.',
     ];
 

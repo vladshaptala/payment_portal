@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/core/config/app_config.dart';
+import 'package:payment_portal/app/config/app_brand_config.dart';
 
 class PromoBanner extends StatelessWidget {
   const PromoBanner({super.key, required this.message});
