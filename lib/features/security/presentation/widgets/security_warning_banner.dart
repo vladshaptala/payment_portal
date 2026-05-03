@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_portal/features/security/domain/device_security.dart';
 
-/// Shown when [DeviceSecurity.hasIssue] is true.
-/// Brand-agnostic — security warnings are the same across all brands.
 class SecurityWarningBanner extends StatelessWidget {
   const SecurityWarningBanner({super.key, required this.security});
 
@@ -30,8 +28,11 @@ class SecurityWarningBanner extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.warning_amber_rounded,
-              color: theme.colorScheme.error, size: 20),
+          Icon(
+            Icons.warning_amber_rounded,
+            color: theme.colorScheme.error,
+            size: 20,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(

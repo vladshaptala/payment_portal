@@ -3,18 +3,12 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:payment_portal/app/config/app_brand_config.dart';
 
-/// Radar-style security scanning animation.
-///
-/// Architecture for 60/120 fps without tree-wide repaints:
-///   • [RepaintBoundary] promotes the canvas to its own compositing layer;
-///     only this layer is rasterised on each animation tick.
-///   • The [CustomPainter] uses `repaint: animation` so [RenderCustomPaint]
-///     listens directly to the ticker — no [AnimatedBuilder]/[setState]
-///     dirtying the parent tree.
-///   • [Paint] objects are instance fields: allocated once per painter
-///     instance (rare), mutated in place every frame (no per-frame GC).
 class SecurityScannerWidget extends StatefulWidget {
-  const SecurityScannerWidget({super.key, this.size = 180.0, this.primaryColor});
+  const SecurityScannerWidget({
+    super.key,
+    this.size = 180.0,
+    this.primaryColor,
+  });
 
   final double size;
   final Color? primaryColor;
@@ -151,7 +145,11 @@ class _SecurityScannerPainter extends CustomPainter {
   }
 
   void _paintSweepSector(
-    Canvas canvas, double cx, double cy, double R, double sweepAngle,
+    Canvas canvas,
+    double cx,
+    double cy,
+    double R,
+    double sweepAngle,
   ) {
     const trailSpan = math.pi * 0.72;
     _sectorPaint.shader = ui.Gradient.sweep(
@@ -177,7 +175,11 @@ class _SecurityScannerPainter extends CustomPainter {
   }
 
   void _paintSineOverlay(
-    Canvas canvas, double cx, double cy, double R, double t,
+    Canvas canvas,
+    double cx,
+    double cy,
+    double R,
+    double t,
   ) {
     const amplitude = 5.5;
     const frequency = 3.0;
@@ -190,7 +192,8 @@ class _SecurityScannerPainter extends CustomPainter {
     for (int px = 0; px <= steps; px++) {
       final x = left + px.toDouble();
       final normX = px / steps;
-      final y = waveY +
+      final y =
+          waveY +
           amplitude * math.sin(2 * math.pi * (frequency * normX - t * 2.8));
       if (px == 0) {
         path.moveTo(x, y);
@@ -218,7 +221,11 @@ class _SecurityScannerPainter extends CustomPainter {
   }
 
   void _paintBlips(
-    Canvas canvas, double cx, double cy, double R, double sweepAngle,
+    Canvas canvas,
+    double cx,
+    double cy,
+    double R,
+    double sweepAngle,
   ) {
     const visibleArc = math.pi * 0.6;
     for (final blip in blips) {
@@ -240,19 +247,19 @@ class _SecurityScannerPainter extends CustomPainter {
   }
 
   void _paintScanLine(
-    Canvas canvas, double cx, double cy, double R, double sweepAngle,
+    Canvas canvas,
+    double cx,
+    double cy,
+    double R,
+    double sweepAngle,
   ) {
     final ex = cx + R * math.cos(sweepAngle);
     final ey = cy + R * math.sin(sweepAngle);
     _strokePaint
-      ..shader = ui.Gradient.linear(
-        Offset(cx, cy),
-        Offset(ex, ey),
-        [
-          primaryColor.withValues(alpha: 0.0),
-          primaryColor.withValues(alpha: 1.0),
-        ],
-      )
+      ..shader = ui.Gradient.linear(Offset(cx, cy), Offset(ex, ey), [
+        primaryColor.withValues(alpha: 0.0),
+        primaryColor.withValues(alpha: 1.0),
+      ])
       ..strokeWidth = 1.8
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(Offset(cx, cy), Offset(ex, ey), _strokePaint);
