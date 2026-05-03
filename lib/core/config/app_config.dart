@@ -22,21 +22,21 @@ class AppBrandConfig extends ThemeExtension<AppBrandConfig> {
   final String brandName;
   final AppFlavor flavor;
 
-  // ── Feature flags ──────────────────────────────────────────────────────────
+  // Feature flags
   final bool showPromoBanner;
   final String? promoMessage;
   final bool showBillBreakdown;
   final bool useHighDensityLayout;
   final bool useFluidTransitions;
 
-  // ── Visual tokens ──────────────────────────────────────────────────────────
+  //UI
   final double cardBorderRadius;
   final double buttonBorderRadius;
   final EdgeInsets contentPadding;
   final Duration transitionDuration;
   final Curve transitionCurve;
 
-  // ── Convenience ────────────────────────────────────────────────────────────
+  // Convenience
   SizedBox get verticalGap =>
       SizedBox(height: useHighDensityLayout ? 8.0 : 16.0);
 
@@ -45,7 +45,7 @@ class AppBrandConfig extends ThemeExtension<AppBrandConfig> {
   static AppBrandConfig of(BuildContext context) =>
       Theme.of(context).extension<AppBrandConfig>()!;
 
-  // ── ThemeExtension overrides ───────────────────────────────────────────────
+  // ThemeExtension overrides
   @override
   AppBrandConfig copyWith({
     String? brandName,

@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payment_portal/core/theme/retail_theme.dart';
 import 'package:payment_portal/features/payment/views/payment_confirmation_view.dart';
 
-/// Brand A entry point.
-/// Run with: flutter run --target lib/main_retail.dart
 void main() {
   runApp(const ProviderScope(child: _RetailApp()));
 }

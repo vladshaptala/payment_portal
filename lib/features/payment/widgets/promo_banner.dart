@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_portal/core/config/app_config.dart';
 
-/// Shown only when AppBrandConfig.showPromoBanner == true (retail flavor).
-/// Widgets never check AppFlavor directly — the feature flag drives visibility.
 class PromoBanner extends StatelessWidget {
   const PromoBanner({super.key, required this.message});
 
@@ -18,10 +16,7 @@ class PromoBanner extends StatelessWidget {
       curve: config.transitionCurve,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.secondary,
-            theme.colorScheme.primary,
-          ],
+          colors: [theme.colorScheme.secondary, theme.colorScheme.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
