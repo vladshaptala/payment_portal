@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payment_portal/features/security/domain/device_security.dart';
+import 'package:payment_portal/features/security_guard/domain/device_security.dart';
 
 class SecurityWarningBanner extends StatelessWidget {
   const SecurityWarningBanner({super.key, required this.security});

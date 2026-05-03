@@ -1,4 +1,4 @@
-import 'package:payment_portal/features/security/domain/device_security.dart';
+import 'package:payment_portal/features/security_guard/domain/device_security.dart';
 
 /// Contract for device security checks and window hardening.
 abstract interface class SecurityRepository {

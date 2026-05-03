@@ -6,9 +6,9 @@ import 'package:payment_portal/features/payment/presentation/widgets/bill_breakd
 import 'package:payment_portal/features/payment/presentation/widgets/payment_summary_card.dart';
 import 'package:payment_portal/features/payment/presentation/widgets/processing_progress_widget.dart';
 import 'package:payment_portal/features/payment/presentation/widgets/promo_banner.dart';
-import 'package:payment_portal/features/security/application/security_notifier.dart';
-import 'package:payment_portal/features/security/presentation/widgets/security_scanner_widget.dart';
-import 'package:payment_portal/features/security/presentation/widgets/security_warning_banner.dart';
+import 'package:payment_portal/features/security_guard/application/security_notifier.dart';
+import 'package:payment_portal/features/security_guard/presentation/widgets/security_scanner_widget.dart';
+import 'package:payment_portal/features/security_guard/presentation/widgets/security_warning_banner.dart';
 
 class PaymentScreen extends ConsumerStatefulWidget {
   const PaymentScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:payment_portal/features/security/data/native_security_repository.dart';
-import 'package:payment_portal/features/security/data/security_repository.dart';
-import 'package:payment_portal/features/security/domain/device_security.dart';
+import 'package:payment_portal/features/security_guard/data/native_security_repository.dart';
+import 'package:payment_portal/features/security_guard/data/security_repository.dart';
+import 'package:payment_portal/features/security_guard/domain/device_security.dart';
 
 part 'security_notifier.freezed.dart';
 part 'security_notifier.g.dart';

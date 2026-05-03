@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_portal/app/config/app_brand_config.dart';
-import 'package:payment_portal/features/security/presentation/widgets/security_scanner_widget.dart';
+import 'package:payment_portal/features/security_guard/presentation/widgets/security_scanner_widget.dart';
 
 class ProcessingProgressWidget extends StatelessWidget {
   const ProcessingProgressWidget({super.key, required this.progress});

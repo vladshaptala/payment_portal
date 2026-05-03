@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:payment_portal/features/security/data/security_repository.dart';
-import 'package:payment_portal/features/security/domain/device_security.dart';
+import 'package:payment_portal/features/security_guard/data/security_repository.dart';
+import 'package:payment_portal/features/security_guard/domain/device_security.dart';
 
 const _securityChannel = MethodChannel('com.example.payment_portal/security');
 const _windowChannel = MethodChannel('com.example.payment_portal/window');
