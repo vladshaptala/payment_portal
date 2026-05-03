@@ -8,6 +8,7 @@ import 'package:payment_portal/features/payment/widgets/bill_breakdown.dart';
 import 'package:payment_portal/features/payment/widgets/payment_summary_card.dart';
 import 'package:payment_portal/features/payment/widgets/processing_progress_widget.dart';
 import 'package:payment_portal/features/payment/widgets/promo_banner.dart';
+import 'package:payment_portal/features/payment/widgets/security_scanner_widget.dart';
 import 'package:payment_portal/features/payment/widgets/security_warning_banner.dart';
 
 class PaymentConfirmationScreen extends ConsumerStatefulWidget {
@@ -54,6 +55,11 @@ class _PaymentConfirmationScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (security.isChecking) ...[
+              SecurityScanningCard(label: 'Scanning device security…'),
+              config.verticalGap,
+            ],
+
             if (hasSecurityIssue) ...[
               SecurityWarningBanner(securityState: security),
               config.verticalGap,

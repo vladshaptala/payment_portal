@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_portal/core/config/app_config.dart';
+import 'package:payment_portal/features/payment/widgets/security_scanner_widget.dart';
 
 class ProcessingProgressWidget extends StatelessWidget {
   const ProcessingProgressWidget({super.key, required this.progress});
@@ -25,13 +26,9 @@ class ProcessingProgressWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  color: theme.colorScheme.primary,
-                ),
+              SecurityScannerWidget(
+                size: 26,
+                primaryColor: theme.colorScheme.primary,
               ),
               const SizedBox(width: 10),
               Expanded(
