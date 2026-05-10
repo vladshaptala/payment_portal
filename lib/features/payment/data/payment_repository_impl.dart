@@ -4,8 +4,8 @@ import 'package:payment_portal/features/payment/domain/payment.dart';
 
 const _channel = MethodChannel('com.example.payment_portal/payment_service');
 
-class ChannelPaymentRepository implements PaymentRepository {
-  const ChannelPaymentRepository();
+class PaymentRepositoryImpl implements PaymentRepository {
+  const PaymentRepositoryImpl();
 
   @override
   PaymentOrder getPendingPayment() => _kMockOrder;

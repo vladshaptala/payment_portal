@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:payment_portal/features/security_guard/data/native_security_repository.dart';
+import 'package:payment_portal/features/security_guard/data/security_repository_impl.dart';
 import 'package:payment_portal/features/security_guard/data/security_repository.dart';
 import 'package:payment_portal/features/security_guard/domain/device_security.dart';
 
@@ -22,7 +22,7 @@ extension SecurityCheckStateX on SecurityCheckState {
 
 @riverpod
 SecurityRepository securityRepository(Ref ref) =>
-    const NativeSecurityRepository();
+    const SecurityRepositoryImpl();
 
 @riverpod
 class SecurityNotifier extends _$SecurityNotifier {

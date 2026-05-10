@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:payment_portal/features/payment/data/channel_payment_repository.dart';
+import 'package:payment_portal/features/payment/data/payment_repository_impl.dart';
 import 'package:payment_portal/features/payment/data/payment_repository.dart';
 import 'package:payment_portal/features/payment/domain/payment.dart';
 
@@ -25,8 +25,7 @@ extension PaymentStatusExt on PaymentState {
 }
 
 @riverpod
-PaymentRepository paymentRepository(Ref ref) =>
-    const ChannelPaymentRepository();
+PaymentRepository paymentRepository(Ref ref) => const PaymentRepositoryImpl();
 
 @riverpod
 class PaymentNotifier extends _$PaymentNotifier {

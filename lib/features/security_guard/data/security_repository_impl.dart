@@ -5,8 +5,8 @@ import 'package:payment_portal/features/security_guard/domain/device_security.da
 const _securityChannel = MethodChannel('com.example.payment_portal/security');
 const _windowChannel = MethodChannel('com.example.payment_portal/window');
 
-class NativeSecurityRepository implements SecurityRepository {
-  const NativeSecurityRepository();
+class SecurityRepositoryImpl implements SecurityRepository {
+  const SecurityRepositoryImpl();
 
   @override
   Future<DeviceSecurity> checkDeviceSecurity() async {
